@@ -6,7 +6,10 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layouts/Layout";
 import Header from "./pages/Header/Header";
 import Footer from "./pages/Footer/Footer";
+import Register from "./components/Register/Register";
 function App() {
+  const userLogin = localStorage.getItem("userLogin");
+  console.log(JSON.parse(userLogin));
   return (
     <>
       <Header />
@@ -14,6 +17,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="counter" element={<Counter />} />
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
       </Routes>
       <Footer />
