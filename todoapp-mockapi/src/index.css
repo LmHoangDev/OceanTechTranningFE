@@ -16,3 +16,7 @@ code {
 .css-1999axt-MuiAvatar-root {
     background-color: red !important;
 }
+
+#root {
+    min-height: 100vh;
+}

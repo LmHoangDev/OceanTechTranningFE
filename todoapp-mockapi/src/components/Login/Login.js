@@ -14,6 +14,7 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import _ from "lodash";
+import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +26,9 @@ export default function Login() {
   let navigate = useNavigate();
   console.log(arrUser);
   const dispatch = useDispatch();
-
+  const FormStyled = styled(Box)`
+    width: 100%;
+  `;
   useEffect(() => {
     dispatch(fetchListUser());
     console.log("Hello");
@@ -87,7 +90,7 @@ export default function Login() {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" sx={{ minWidth: "300px" }}>
       <CssBaseline />
       <ToastContainer
         position="top-right"
@@ -116,7 +119,12 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <FormStyled
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
@@ -148,10 +156,6 @@ export default function Login() {
             </IconButton>
           </div>
 
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -167,7 +171,7 @@ export default function Login() {
               </Link>
             </Grid>
           </Grid>
-        </Box>
+        </FormStyled>
       </Box>
     </Container>
   );

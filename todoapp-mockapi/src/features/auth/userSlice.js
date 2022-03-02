@@ -5,7 +5,11 @@ export const fetchListUser = createAsyncThunk("GET_LIST_USER", async () => {
   const response = await authService.getListUser();
   return response.data;
 });
-
+export const fetchSignUpUser = createAsyncThunk("SIGN_UP", async (data) => {
+  const response = await authService.signUp(data);
+  console.log(response.data);
+  return response.data;
+});
 const initialState = {
   arrUser: [],
   error: null,
@@ -38,6 +42,18 @@ const userSlice = createSlice({
       })
       .addCase(fetchListUser.rejected, (state, action) => {
         state.error = action.error;
+        state.loading = false;
+      })
+      // SIGN UP
+      .addCase(fetchSignUpUser.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(fetchSignUpUser.fulfilled, (state, action) => {
+        //state.arrUser = action.payload;
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(fetchSignUpUser.rejected, (state, action) => {
         state.loading = false;
       });
   },
