@@ -11,7 +11,7 @@ export class TaskService extends baseService {
     return this.put(`users/${idUser}/tasks/${idTask}`, data);
   };
   deteleTask = (idUser, idTask) => {
-    return this.detele(`users/${idUser}/tasks/${idTask}`);
+    return this.delete(`users/${idUser}/tasks/${idTask}`);
   };
   getAllTask = (idUser) => {
     return this.get(`users/${idUser}/tasks`);

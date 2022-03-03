@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import HomeIcon from "@mui/icons-material/Home";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import styled from "styled-components";
-import IconButton from "@mui/material/IconButton";
-import HomeIcon from "@mui/icons-material/Home";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../features/auth/userSlice";
 import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { logOut } from "../../features/auth/userSlice";
+
 const StyledLink = styled(Link)`
   color: #fff;
   text-decoration: none;
@@ -27,19 +27,17 @@ const StyledHeader = styled(Box)`
 `;
 
 export default function Header() {
-  // const userLoginBW = localStorage.getItem("userLogin");
-  // const [userLogin, setUserLogin] = useState(JSON.parse(userLoginBW) ?? null);
   const { userLogin } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.clear();
-    // setUserLogin(null);
     dispatch(logOut());
   };
   const renderAuth = () => {
     return _.isEmpty(userLogin) ? (
       <>
+        <Typography component="div" sx={{ flexGrow: 1 }}></Typography>
         <Typography variant="h7">
           <StyledLink to="login">Sign In</StyledLink>
         </Typography>
@@ -49,6 +47,12 @@ export default function Header() {
       </>
     ) : (
       <>
+        <Typography variant="h7" component="div">
+          <StyledLink to="counter">Counter</StyledLink>
+        </Typography>
+        <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
+          <StyledLink to="task">Task Management</StyledLink>
+        </Typography>
         <Typography variant="h7">
           <StyledLink to="/" onClick={handleLogOut}>
             LOG OUT
@@ -67,12 +71,13 @@ export default function Header() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {
+              navigate("/task");
+            }}
           >
             <HomeIcon fontSize="large" />
           </IconButton>
-          <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
-            <StyledLink to="counter">Counter</StyledLink>
-          </Typography>{" "}
+
           {renderAuth()}
         </Toolbar>
       </AppBar>

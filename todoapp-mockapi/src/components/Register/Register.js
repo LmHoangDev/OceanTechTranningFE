@@ -42,13 +42,13 @@ const schema = yup
   .required();
 
 export default function Register() {
+  const { error, arrUser } = useSelector((state) => state.user);
   const [values, setValues] = useState({
     password: "",
     email: "",
     phone: "",
     showPassword: false,
   });
-  const { error, arrUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleClickShowPassword = () => {
@@ -61,16 +61,6 @@ export default function Register() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   // eslint-disable-next-line no-console
-  //   console.log({
-  //     email: data.get("email"),
-  //     password: data.get("password"),
-  //     phone: data.get("phone"),
-  //   });
-  // };
   const {
     register,
     handleSubmit,
@@ -176,7 +166,6 @@ export default function Register() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             {...register("email")}
           />
           <SpanStyled>{errors.email?.message}</SpanStyled>
@@ -188,7 +177,6 @@ export default function Register() {
               {...register("password")}
               label="Password"
               type={values.showPassword ? "text" : "password"}
-              autoComplete="current-password"
               fullWidth
             />{" "}
             <IconButton
@@ -211,7 +199,6 @@ export default function Register() {
             label="Phone"
             type="text"
             id="phone"
-            autoComplete="current-password"
           />
           <SpanStyled>{errors.phone?.message}</SpanStyled>
           <Button

@@ -35,8 +35,16 @@ export default function Login() {
   }, []);
   const [values, setValues] = useState({
     password: "",
+    email: "",
     showPassword: false,
   });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+  };
   const handleClickShowPassword = () => {
     setValues({
       ...values,
@@ -132,7 +140,9 @@ export default function Login() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
+            onChange={handleChange}
+            value={values.email}
+            type="email"
             autoFocus
           />
           <div className="position-relative">
@@ -141,9 +151,11 @@ export default function Login() {
               required
               label="Password"
               type={values.showPassword ? "text" : "password"}
-              autoComplete="current-password"
               name="password"
+              onChange={handleChange}
+              value={values.password}
               fullWidth
+              autoFocus
             />{" "}
             <IconButton
               aria-label="toggle password visibility"
@@ -164,7 +176,7 @@ export default function Login() {
           >
             Sign In
           </Button>
-          <Grid container>
+          <Grid container className="text-center">
             <Grid item xs>
               <Link href="register" variant="body2">
                 {"Don't have an account? Sign Up"}
