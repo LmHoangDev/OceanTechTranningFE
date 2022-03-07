@@ -1,13 +1,15 @@
 import { Button, Input, Modal } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+
 import {
   fetchAddTaskByUser,
   fetchDeleteTaskByUser,
   fetchListTaskByUser,
   fetchUpdateTaskByUser,
 } from "../../features/task/taskSlice";
+import ToastComponent from "../ToastNotification";
+import { handleToast } from "../ToastNotification/toast";
 export default function Task() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { arrTask, error, loading } = useSelector((state) => state.task);
@@ -18,12 +20,13 @@ export default function Task() {
   });
 
   const dispatch = useDispatch();
-  //console.log(arrTask);
+
   // tao flag check lan dau tien khi disabled checkbox hay ko
   const refCheckBox = useRef();
   useEffect(() => {
     dispatch(fetchListTaskByUser());
   }, []);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({
@@ -47,25 +50,13 @@ export default function Task() {
           title: values.title,
         })
       );
-      return toast.success("Thêm công việc thành công!!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+      setValues({
+        ...values,
+        title: "",
       });
+      return handleToast("success", "Thêm công việc thành công!!");
     } else {
-      return toast.error("Title required !!!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return handleToast("error", "Title is required!!");
     }
   };
 
@@ -108,27 +99,12 @@ export default function Task() {
         title: values.title,
         isFinish: !!values.isFinish,
       };
-      console.log(formData);
-      await dispatch(fetchUpdateTaskByUser(+values.id, formData));
-      return toast.success("Cập nhật công việc thành công!!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      console.log("Data sau khi khi update:", formData);
+      await dispatch(fetchUpdateTaskByUser({ ...formData, id: values.id }));
+      await dispatch(fetchListTaskByUser());
+      return handleToast("success", "Cập nhật công việc thành công !!");
     } else {
-      return toast.error("Cập nhật công việc thất bại!!", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return handleToast("error", "Cập nhật công việc thất bại!!");
     }
   };
   const handleCancel = () => {
@@ -173,15 +149,7 @@ export default function Task() {
               onClick={() => {
                 dispatch(fetchDeleteTaskByUser(item.id));
                 console.log(item.id);
-                return toast.success("Xóa công việc thành công!!", {
-                  position: "top-right",
-                  autoClose: 1000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
+                return handleToast("success", "Xóa công việc thành công !!");
               }}
               type="primary"
               danger
@@ -198,18 +166,7 @@ export default function Task() {
       style={{ minHeight: 400, width: "80%", margin: "0 auto" }}
       className="table-responsive"
     >
-      {" "}
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastComponent />
       <Modal
         title="Cập nhật công việc"
         visible={isModalVisible}
@@ -260,6 +217,7 @@ export default function Task() {
               onChange={handleChange}
               htmlType="submit"
               placeholder="Thêm công việc"
+              value={values.title}
             />
             <Button type="primary" htmlType="submit">
               Thêm
@@ -280,7 +238,7 @@ export default function Task() {
           <tbody>{renderTask()}</tbody>
         </table>
       ) : (
-        ""
+        <p className="text-center text-danger">(No data ....)</p>
       )}
     </div>
   );

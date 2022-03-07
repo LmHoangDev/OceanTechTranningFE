@@ -20,3 +20,7 @@ code {
 #root {
     min-height: 100vh;
 }
+
+.filter-dropdown {
+    outline: none;
+}

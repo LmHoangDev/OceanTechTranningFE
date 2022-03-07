@@ -13,8 +13,12 @@ export class TaskService extends baseService {
   deteleTask = (idUser, idTask) => {
     return this.delete(`users/${idUser}/tasks/${idTask}`);
   };
-  getAllTask = (idUser) => {
-    return this.get(`users/${idUser}/tasks`);
+  getAllTask = (idUser, isFinish = "") => {
+    if (isFinish === "") {
+      return this.get(`users/${idUser}/tasks`);
+    } else {
+      return this.get(`users/${idUser}/tasks?isFinish=${isFinish}`);
+    }
   };
   getDetailTask = (idUser, idTask) => {
     return this.get(`/users/${idUser}/tasks/${idTask}`);

@@ -5,10 +5,12 @@ import _ from "lodash";
 // First, create the thunk
 export const fetchListTaskByUser = createAsyncThunk(
   "GET_LIST_TASK",
-  async () => {
+  async (status) => {
     const userLogin = localStorage.getItem("userLogin");
-    const response = await taskService.getAllTask(+JSON.parse(userLogin).id);
-    console.log(response.data);
+    const response = await taskService.getAllTask(
+      +JSON.parse(userLogin).id,
+      status
+    );
     return response.data;
   }
 );
@@ -21,7 +23,6 @@ export const fetchAddTaskByUser = createAsyncThunk(
       +JSON.parse(userLogin).id,
       formData
     );
-    console.log(response.data);
     return response.data;
   }
 );
@@ -34,21 +35,19 @@ export const fetchDeleteTaskByUser = createAsyncThunk(
       +JSON.parse(userLogin).id,
       idTask
     );
-    console.log(response.data);
     return response.data;
   }
 );
 
 export const fetchUpdateTaskByUser = createAsyncThunk(
   "UPDATE_TASK_USER",
-  async (idTask, formData) => {
+  async (formData) => {
     const userLogin = localStorage.getItem("userLogin");
     const response = await taskService.updateTask(
       +JSON.parse(userLogin).id,
-      idTask,
+      formData.id,
       formData
     );
-    console.log(response.data);
     return response.data;
   }
 );
@@ -109,12 +108,7 @@ const taskSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchUpdateTaskByUser.fulfilled, (state, action) => {
-        // console.log("action payload", action.payload);
-        // var index = _.findIndex(state.arrTask, { id: action.payload.id });
-
-        // // Replace item at index using native splice
-        // state.arrTask.splice(index, 1, action.payload);
-        console.log("action", action);
+        state.arrTask[action.payload.id] = action.payload;
         state.loading = false;
       })
       .addCase(fetchUpdateTaskByUser.rejected, (state, action) => {

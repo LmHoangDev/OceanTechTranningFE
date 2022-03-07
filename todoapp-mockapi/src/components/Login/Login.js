@@ -5,33 +5,31 @@ import { IconButton } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import _ from "lodash";
-import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
 import { fetchListUser, signIn } from "../../features/auth/userSlice";
+import ToastComponent from "../ToastNotification";
+import { handleToast } from "../ToastNotification/toast";
 export default function Login() {
   const { arrUser, error, userLogin } = useSelector((state) => state.user);
   let navigate = useNavigate();
-  console.log(arrUser);
+
   const dispatch = useDispatch();
   const FormStyled = styled(Box)`
     width: 100%;
   `;
   useEffect(() => {
     dispatch(fetchListUser());
-    console.log("Hello");
   }, []);
   const [values, setValues] = useState({
     password: "",
@@ -75,44 +73,16 @@ export default function Login() {
       }, 2500);
       localStorage.setItem("userLogin", JSON.stringify(userLoginForm.id));
       dispatch(signIn(userLoginForm));
-      return toast.success("Login Successfully!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return handleToast("success", "Login Successfully!");
     } else {
-      return toast.error("Login Failed!", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      return handleToast("error", "Login Failed!");
     }
   };
 
   return (
     <Container component="main" maxWidth="xs" sx={{ minWidth: "300px" }}>
       <CssBaseline />
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* Same as */}
-      <ToastContainer />
+      <ToastComponent />
       <Box
         sx={{
           marginTop: 8,
