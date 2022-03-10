@@ -1,0 +1,9 @@
+.register-container {
+    background-color: #fff;
+    border-radius: 15px;
+    transform: translateY(50px);
+}
+
+h1 {
+    color: #000;
+}

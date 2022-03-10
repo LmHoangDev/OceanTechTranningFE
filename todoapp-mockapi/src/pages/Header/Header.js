@@ -38,18 +38,9 @@ export default function Header() {
     return _.isEmpty(userLogin) ? (
       <>
         <Typography component="div" sx={{ flexGrow: 1 }}></Typography>
-        <Typography variant="h7">
-          <StyledLink to="login">Sign In</StyledLink>
-        </Typography>
-        <Typography variant="h7">
-          <StyledLink to="register">Sign Up</StyledLink>
-        </Typography>
       </>
     ) : (
       <>
-        <Typography variant="h7" component="div">
-          <StyledLink to="counter">Counter</StyledLink>
-        </Typography>
         <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
           <StyledLink to="task">Task Management</StyledLink>
         </Typography>
