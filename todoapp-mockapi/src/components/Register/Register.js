@@ -85,7 +85,7 @@ export default function Register() {
       setTimeout(() => {
         if (!error) {
           setTimeout(() => {
-            navigate("/login");
+            navigate("/");
           }, 2000);
           return handleToast("success", "Sign Up Successfully");
         } else {
@@ -176,7 +176,7 @@ export default function Register() {
             >
               Sign Up
             </Button>
-            <Link to="/login" className="text-danger mt-3">
+            <Link to="/" className="text-danger mt-3">
               Go back
             </Link>
           </FormStyled>
